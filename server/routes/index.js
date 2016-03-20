@@ -3,7 +3,6 @@ var express = require('express');
 var router = express.Router();
 router.use(cors())
 
-var gcm = require("node-gcm");
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -27,8 +26,12 @@ router.post('/register', function(req, res) {
 		res.status(400);
 		res.json({
 			message:"invalid paramaters"
-		})
+		});
 	}
+});
+
+router.post('/update-schedule', function(req, res) {
+	
 });
 
 module.exports = router;

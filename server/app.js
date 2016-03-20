@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var gcm = require("node-gcm");
+
 var routes = require('./routes/index');
 
 var app = express();
@@ -54,5 +56,24 @@ app.use(function(err, req, res, next) {
   });
 });
 
+setInterval(sendPushNotification, 15 * 60 * 1000);
+
+// TODO look up node schedule, we need to start this code a the beginning of everyday
+setInterval(addNewQuery, 24 * 60 * 60 * 1000);
+
+notificationList = [];
+
+// Scans through our notification list to see if there
+// are people we need to send notifications to.
+function sendPushNotification() {
+
+}
+
+
+// Scans through our DB and add the time to send inside
+// our notificationList
+function addNewQuery() {
+
+}
 
 module.exports = app;
