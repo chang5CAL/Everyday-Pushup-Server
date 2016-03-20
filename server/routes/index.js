@@ -5,6 +5,9 @@ router.use(cors())
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+
+	var db = req.db;
+	var collection = db.get('test')
   res.render('index', { title: 'Express' });
 });
 
@@ -30,8 +33,22 @@ router.post('/register', function(req, res) {
 	}
 });
 
-router.post('/update-schedule', function(req, res) {
-	
+router.get('/test', function(req, res) {
+	var db = req.db;
+	var collection = db.get('usercollection')
+	collection.find({}, {}, function(e, docs) {
+		console.log("here are the docs");
+		console.log(docs);
+		res.send("yay!");
+	});
 });
+
+/*router.post('/update-schedule', function(req, res) {
+	var user = JSON.parse(req.body.user);
+	// update user with the 
+	db.exercises.update(
+		{ token: }
+	)
+});*/
 
 module.exports = router;
