@@ -32,7 +32,7 @@ router.post('/register', function(req, res) {
 
 router.get('/test', function(req, res) {
 	var db = req.db;
-	var collection = db.get('usercollection')
+	var collection = db.get('usercollection');
 	collection.find({}, {}, function(e, docs) {
 		console.log("here are the docs");
 		console.log(docs);
@@ -40,12 +40,15 @@ router.get('/test', function(req, res) {
 	});
 });
 
-/*router.post('/update-schedule', function(req, res) {
+router.post('/update-schedule', function(req, res) {
 	var user = JSON.parse(req.body.user);
+	var collection = db.get('usercollection');
+	var db = req.db;
 	// update user with the 
 	db.exercises.update(
-		{ token: }
+		{ "token": req.body.token},
+		{$set:("dates": req.body.dates)}
 	)
-});*/
+});
 
 module.exports = router;
