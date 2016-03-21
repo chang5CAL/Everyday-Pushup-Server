@@ -16,6 +16,7 @@
     "node-gcm": "*",
     "cors": "*",
     "mongodb": "^1.4.4",
-    "monk": "^1.0.1"
+    "monk": "^1.0.1",
+    "request": "*"
   }
 }

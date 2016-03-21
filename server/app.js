@@ -8,6 +8,8 @@ var gcm = require("node-gcm");
 var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:55555/test');
+//var http = require('http');
+var request = require('request');
 
 var routes = require('./routes/index');
 
@@ -35,8 +37,33 @@ app.use(function(req,res,next){
 
 app.use('/', routes);
 
+console.log("Offset:", new Date().getTimezoneOffset());
 
-
+var userToken = 'ccP7s13bJC0:APA91bF3tSYA3V78MtBdSNFXYP_g7jeNm8VLsYsa2MrIKi4PN3ELI5e7MoMbgNHcd0J1N1vmnHDl-tMQwxAjvkmFAWp9ITMWwe6PlOIX-YAMQlaFZ7HDn72RG2nhkxywZoTSN9VJgonS';
+var bodyData = {
+    "tokens": [userToken],
+    "profile": 'test2',
+    "send_to_all": false,
+    "scheduled": '2016-03-21T16:59:00-07:00',
+    "notification": {
+      "title": 'Scheduled11',
+      "message": 'Something11',
+      "sound" : 'sound.wav'
+    }
+  }
+request({
+  headers: {
+    'content-type': 'application/json'
+  }, 
+  uri: "https://api.ionic.io/push/notifications",
+  body: JSON.stringify(bodyData),
+  method: "POST",
+  auth: {
+    'bearer':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzNzUxYzM5MC0yZjA3LTQxN2YtOTBhMy02YzBiYTBmNzdiZTQifQ.QXR3c389xsGRRMiKOwPa5fZ_ggxE22vjwABs2VR7TPc'    
+  }
+}, function(err, res, body) {
+  console.log(body);
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
