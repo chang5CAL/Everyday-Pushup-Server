@@ -5,31 +5,28 @@ router.use(cors())
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-
-	var db = req.db;
-	var collection = db.get('test')
   res.render('index', { title: 'Express' });
 });
 
 router.post('/register', function(req, res) {
 	if (req.body.platform == 'ios' || req.body.platform == 'android') {
 		console.log(req.body)
-		res.json({message: "in theory, you're registered!"})
-
-		/*var messgae = new gcm.Message();
-		message.add("fitness-extra", "nothing!");
-		var registerToken = [req.body.token];
-
-		var sender = new gcm.Sender("1111111") // api key
-		sender.send(message, { registrationTokens: registerToken,}, function(err, res) {
-			if (err) console.log(err);
-			else console.log(response)
-		});*/
+		var db = req.db;
+		var collection = db.get("usercollection");
+		collection.insert({
+			"platform": req.body.platform,
+			"token": req.body.token,
+			"dates": [],
+			"timezone": req.body.timezone
+		}, function(err, doc) {
+			if (err) {
+				res.json({"message": "failed"});
+			} else {
+				res.json({"message": "success"});
+			}
+		})
 	} else {
-		res.status(400);
-		res.json({
-			message:"invalid paramaters"
-		});
+		res.json({"message": "failed"})
 	}
 });
 
