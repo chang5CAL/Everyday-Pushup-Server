@@ -49,7 +49,7 @@ router.post('/update-schedule', function(req, res) {
 	// update user with the 
 	db.exercises.update(
 		{ "token": req.body.token},
-		{$set:{"dates": req.body.dates}}
+		{$set:{"dates": JSON.stringify(req.body.dates)}}
 	, function(err) {
 		console.log(err);
 		res.send("yay");
