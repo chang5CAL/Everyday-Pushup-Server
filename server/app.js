@@ -96,6 +96,7 @@ function addNewQuery() {
   collection.find({}, {}, function(e, docs) {
     console.log(docs);
     for(var i = 0; i < docs.length; i++){
+      console.log("going through list");
       var list = JSON.parse(docs[i].dates[day].list);
       for(var r = 0; r < docs[i].dates[day].workouts; r++) {
         console.log("starting to look at list");
