@@ -98,6 +98,8 @@ function addNewQuery() {
     for(var i = 0; i < docs.length; i++){
       console.log("going through list");
       var list = docs[i].dates[day].list;
+      console.log("made list var");
+      console.log(list);
       for(var r = 0; r < docs[i].dates[day].workouts; r++) {
         console.log("starting to look at list");
         if (list.length == 0) {
@@ -109,6 +111,7 @@ function addNewQuery() {
         console.log("sliced and done");
       }
     }
+    console.log("done setup")
   });
 
 }
