@@ -1,7 +1,7 @@
 var cors= require("cors");
 var express = require('express');
 var router = express.Router();
-router.use(cors())
+router.use(cors());
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -12,11 +12,11 @@ router.post('/register', function(req, res) {
 	if (req.body.platform == 'ios' || req.body.platform == 'android') {
 		console.log(req.body)
 		var db = req.db;
-		var collection = db.get("usercollection");
+		var collection = db.get("usercollection2");
 		collection.insert({
 			"platform": req.body.platform,
 			"token": req.body.token,
-			"dates": [],
+			"dates": JSON.stringify([]),
 			"timezone": req.body.timezone
 		}, function(err, doc) {
 			if (err) {
@@ -32,7 +32,7 @@ router.post('/register', function(req, res) {
 
 router.get('/test', function(req, res) {
 	var db = req.db;
-	var collection = db.get('usercollection');
+	var collection = db.get('usercollection2');
 	collection.find({}, {}, function(e, docs) {
 		console.log("here are the docs");
 		console.log(docs);
@@ -42,12 +42,23 @@ router.get('/test', function(req, res) {
 
 router.post('/update-schedule', function(req, res) {
 	var user = JSON.parse(req.body.user);
-	var collection = db.get('usercollection');
+	var collection = db.get('usercollection2');
 	var db = req.db;
 	// update user with the 
 	db.exercises.update(
 		{ "token": req.body.token},
-		{"dates": req.body.dates}
+		{$set:{"dates": JSON.stringify(req.body.dates)}}
+	)
+});
+
+
+router.get('/udt', function(req, res) {
+	var db = req.db;
+	var collection = db.get('usercollection2');
+	console.log("Doing update");
+	collection.update(
+		{"email":"emailtest1"},
+		{$set:{"username":"testgooddog"}}
 	)
 });
 

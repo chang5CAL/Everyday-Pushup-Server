@@ -14,7 +14,6 @@ var request = require('request');
 var routes = require('./routes/index');
 
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -36,34 +35,6 @@ app.use(function(req,res,next){
 
 
 app.use('/', routes);
-
-console.log("Offset:", new Date().getTimezoneOffset());
-
-var userToken = 'ccP7s13bJC0:APA91bF3tSYA3V78MtBdSNFXYP_g7jeNm8VLsYsa2MrIKi4PN3ELI5e7MoMbgNHcd0J1N1vmnHDl-tMQwxAjvkmFAWp9ITMWwe6PlOIX-YAMQlaFZ7HDn72RG2nhkxywZoTSN9VJgonS';
-var bodyData = {
-    "tokens": [userToken],
-    "profile": 'test2',
-    "send_to_all": false,
-    "scheduled": '2016-03-21T16:59:00-07:00',
-    "notification": {
-      "title": 'Scheduled11',
-      "message": 'Something11',
-      "sound" : 'sound.wav'
-    }
-  }
-request({
-  headers: {
-    'content-type': 'application/json'
-  }, 
-  uri: "https://api.ionic.io/push/notifications",
-  body: JSON.stringify(bodyData),
-  method: "POST",
-  auth: {
-    'bearer':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzNzUxYzM5MC0yZjA3LTQxN2YtOTBhMy02YzBiYTBmNzdiZTQifQ.QXR3c389xsGRRMiKOwPa5fZ_ggxE22vjwABs2VR7TPc'    
-  }
-}, function(err, res, body) {
-  console.log(body);
-})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -112,8 +83,77 @@ function sendPushNotification() {
 
 // Scans through our DB and add the time to send inside
 // our notificationList
-function addNewQuery() {
 
+/* {token: "", 
+    dates: [{
+      workouts: 5, 
+      list:['00:30', '12:30']
+      }]
+   }
+*/
+function addNewQuery() {
+  var collection = db.get('usercollection2');
+  var currentDay = new Date();
+  currentDay = (currentDay.getDay()+6) % 7;
+
+  collection.find({}, {}, function(e, docs) {
+    console.log(docs);
+    for(var i = 0; i < docs.length; i++){
+      var list = JSON.parse(docs[i].dates[currentDay].list);
+      for(var r = 0; r < docs[i].dates[currentDay].workouts; r++) {
+        if (list.length == 0) {
+          break;
+        }
+        var randomTime = (Math.random() * list.length);
+        sendRequest(list[randomTime], docs[i].timezone, docs[i].token);
+        list.splice(randomTime, 1);
+      }
+    }
+  });
+
+}
+
+function sendRequest(time, timezone, userToken) {
+  var currentYear = getFullYear();
+  var currentDate = getDate();
+  if (currentDate < 10){
+    currentDate = '0'+currentDate;
+  }
+
+  var currentMonth = getMonth()+1;
+  if (currentMonth < 10){
+    currentMonth = '0'+currentMonth;
+  }
+  var prefix = (timezone < 0) ? "+" : "-";
+  timezone = Math.abs(timezone);
+  if (timezone < 10) 
+    timezone = "0" + timezone;
+  }
+  var bodyData = {
+    "tokens": [userToken],
+    "profile": 'test2',
+    "send_to_all": false,
+    "scheduled": currentYear + "-" +  currentMonth + "-" + currentDate + "T" + 
+      time + ":00" + prefix + timezone + ":00",
+    "notification": {
+      "title": "It's time!",
+      "message": 'Click to start your daily scheduled pushups',
+      "sound" : 'sound.wav'
+    }
+  }
+  request({
+    headers: {
+      'content-type': 'application/json'
+    },
+    uri: "https://api.ionic.io/push/notifications",
+    body: JSON.stringify(bodyData),
+    method: "POST",
+    auth: {
+      'bearer':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzNzUxYzM5MC0yZjA3LTQxN2YtOTBhMy02YzBiYTBmNzdiZTQifQ.QXR3c389xsGRRMiKOwPa5fZ_ggxE22vjwABs2VR7TPc'
+    }
+  }, function(err, res, body) {
+    console.log(body);
+  })
 }
 
 module.exports = app;
