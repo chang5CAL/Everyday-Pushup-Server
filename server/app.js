@@ -98,12 +98,14 @@ function addNewQuery() {
     for(var i = 0; i < docs.length; i++){
       var list = JSON.parse(docs[i].dates[day].list);
       for(var r = 0; r < docs[i].dates[day].workouts; r++) {
+        console.log("starting to look at list");
         if (list.length == 0) {
           break;
         }
         var randomTime = (Math.random() * list.length);
         sendRequest(list[randomTime], docs[i].timezone, docs[i].token);
         list.splice(randomTime, 1);
+        console.log("sliced and done");
       }
     }
   });
@@ -111,6 +113,7 @@ function addNewQuery() {
 }
 
 function sendRequest(time, timezone, userToken) {
+  console.log('starting to send push request')
   var d = new Date()
   var currentYear = d.getFullYear();
   var currentDate = d.getDate();
@@ -152,6 +155,7 @@ function sendRequest(time, timezone, userToken) {
   }, function(err, res, body) {
     console.log(body);
   })
+  console.log("push sent");
 }
 
 module.exports = app;
