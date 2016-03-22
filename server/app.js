@@ -67,18 +67,9 @@ app.use(function(err, req, res, next) {
   });
 });
 
-setInterval(sendPushNotification, 15 * 60 * 1000);
 
 // TODO look up node schedule, we need to start this code a the beginning of everyday
-setInterval(addNewQuery, 24 * 60 * 60 * 1000);
-
-notificationList = [];
-
-// Scans through our notification list to see if there
-// are people we need to send notifications to.
-function sendPushNotification() {
-
-}
+setImmediate(startInterval);
 
 
 // Scans through our DB and add the time to send inside
@@ -91,7 +82,14 @@ function sendPushNotification() {
       }]
    }
 */
+function startInterval() {
+  setInterval(addNewQuery, 24 * 60 * 60 * 1000);
+  addNewQuery()
+}
+
 function addNewQuery() {
+  setInterval
+  console.log("add new Query")
   var collection = db.get('usercollection3');
   var currentDay = new Date();
   var day = (currentDay.getDay()+6) % 7;
