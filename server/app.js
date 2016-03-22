@@ -88,7 +88,6 @@ function startInterval() {
 }
 
 function addNewQuery() {
-  setInterval
   console.log("add new Query")
   var collection = db.get('usercollection3');
   var currentDay = new Date();
