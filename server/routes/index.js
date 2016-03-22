@@ -42,8 +42,8 @@ router.get('/test', function(req, res) {
 });
 
 router.post('/update-schedule', function(req, res) {
-	console.log("update schedule " + req.body);
-	var user = JSON.parse(req.body.user);
+	console.log("update schedule " + req.body.token);
+	console.log("update schedule " + req.body.dates);
 	var collection = db.get('usercollection3');
 	var db = req.db;
 	// update user with the 
