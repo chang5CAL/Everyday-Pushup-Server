@@ -97,10 +97,12 @@ function addNewQuery() {
     console.log(docs);
     for(var i = 0; i < docs.length; i++){
       console.log("going through list");
-      var list = docs[i].dates[day].list;
+      var dates = JSON.parse(docs[i].dates);
+      var list = dates[day].list;
+      var workouts = dates[day].workouts;
       console.log("made list var");
       console.log(list);
-      for(var r = 0; r < docs[i].dates[day].workouts; r++) {
+      for(var r = 0; r < workouts; r++) {
         console.log("starting to look at list");
         if (list.length == 0) {
           break;
