@@ -44,10 +44,10 @@ router.get('/test', function(req, res) {
 router.post('/update-schedule', function(req, res) {
 	console.log("update schedule " + req.body.token);
 	console.log("update schedule " + req.body.dates);
-	var collection = db.get('usercollection3');
 	var db = req.db;
+	var collection = db.get('usercollection3');
 	// update user with the 
-	db.exercises.update(
+	collection.update(
 		{ "token": req.body.token},
 		{$set:{"dates": JSON.stringify(req.body.dates)}}
 	, function(err) {
