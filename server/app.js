@@ -92,15 +92,15 @@ function sendPushNotification() {
    }
 */
 function addNewQuery() {
-  var collection = db.get('usercollection2');
+  var collection = db.get('usercollection3');
   var currentDay = new Date();
-  currentDay = (currentDay.getDay()+6) % 7;
+  var day = (currentDay.getDay()+6) % 7;
 
   collection.find({}, {}, function(e, docs) {
     console.log(docs);
     for(var i = 0; i < docs.length; i++){
-      var list = JSON.parse(docs[i].dates[currentDay].list);
-      for(var r = 0; r < docs[i].dates[currentDay].workouts; r++) {
+      var list = JSON.parse(docs[i].dates[day].list);
+      for(var r = 0; r < docs[i].dates[day].workouts; r++) {
         if (list.length == 0) {
           break;
         }
@@ -114,19 +114,20 @@ function addNewQuery() {
 }
 
 function sendRequest(time, timezone, userToken) {
-  var currentYear = getFullYear();
-  var currentDate = getDate();
+  var d = new Date()
+  var currentYear = d.getFullYear();
+  var currentDate = d.getDate();
   if (currentDate < 10){
-    currentDate = '0'+currentDate;
+    currentDate = '0' + currentDate;
   }
 
-  var currentMonth = getMonth()+1;
+  var currentMonth = d.getMonth() + 1;
   if (currentMonth < 10){
     currentMonth = '0'+currentMonth;
   }
   var prefix = (timezone < 0) ? "+" : "-";
   timezone = Math.abs(timezone);
-  if (timezone < 10) 
+  if (timezone < 10) {
     timezone = "0" + timezone;
   }
   var bodyData = {

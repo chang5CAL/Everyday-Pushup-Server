@@ -9,10 +9,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/register', function(req, res) {
+	console.log("register", req.body);
 	if (req.body.platform == 'ios' || req.body.platform == 'android') {
 		console.log(req.body)
 		var db = req.db;
-		var collection = db.get("usercollection2");
+		var collection = db.get("usercollection3");
 		collection.insert({
 			"platform": req.body.platform,
 			"token": req.body.token,
@@ -41,8 +42,9 @@ router.get('/test', function(req, res) {
 });
 
 router.post('/update-schedule', function(req, res) {
+	console.log("update schedule " + req.body);
 	var user = JSON.parse(req.body.user);
-	var collection = db.get('usercollection2');
+	var collection = db.get('usercollection3');
 	var db = req.db;
 	// update user with the 
 	db.exercises.update(
