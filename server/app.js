@@ -107,7 +107,10 @@ function addNewQuery() {
         if (list.length == 0) {
           break;
         }
-        var randomTime = (Math.random() * list.length);
+        var randomTime = Math.floor((Math.random() * list.length));
+        console.log("random time " + randomTime);
+        console.log("token " + docs[i].token)
+        console.log(list);
         sendRequest(list[randomTime], docs[i].timezone, docs[i].token);
         list.splice(randomTime, 1);
         console.log("sliced and done");
