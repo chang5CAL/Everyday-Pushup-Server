@@ -136,12 +136,15 @@ function sendRequest(time, timezone, userToken) {
   if (timezone < 10) {
     timezone = "0" + timezone;
   }
+
+  var date = currentYear + "-" +  currentMonth + "-" + currentDate + "T" + 
+      time + ":00" + prefix + timezone + ":00";
+  console.log(date)
   var bodyData = {
     "tokens": [userToken],
     "profile": 'test2',
     "send_to_all": false,
-    "scheduled": currentYear + "-" +  currentMonth + "-" + currentDate + "T" + 
-      time + ":00" + prefix + timezone + ":00",
+    "scheduled": date,
     "notification": {
       "title": "It's time!",
       "message": 'Click to start your daily scheduled pushups',
